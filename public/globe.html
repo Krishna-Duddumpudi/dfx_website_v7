@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam/p5.easycam.min.js"></script>
+    <script type="module" src="../src/globe.js"></script>
+</head>
+
+<body>
+    <div class="row">
+        <div class="data" style="width: 30%; height: 100vh;"">
+            <p id="globe_title">Project Title</p>
+            <p id="globe_client">Client</p>
+            <p id="globe_location">Location</p>
+            <p id="globe_year">Year</p>
+            <p id="globe_format">Format</p>
+            <p id="globe_service">Service</p>
+        </div>
+        <div class="globe" id="globeAni"
+            style="width: 70%; height: 100vh;">
+        </div>
+    </div>
+    <style>
+        body {
+            overflow: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        .row {
+            width: 100%;
+            display: flex;
+            border: 1px solid green
+        }
+    </style>
+</body>
+
+</html>
