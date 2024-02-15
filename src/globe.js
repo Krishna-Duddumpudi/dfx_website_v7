@@ -41,7 +41,7 @@ export default class globeDiv {
                 helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/HelveticaNeueLTStd-Roman.otf');
 
                 table = p5.loadTable(
-                    'https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_title_v3/projects.csv',
+                    'https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/projects.csv',
                     'header'
                 );
             }
