@@ -62,8 +62,8 @@ export default class heroDiv {
             let newLine = false;
 
             p5.preload = function () {
-                neue = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/threejs_cdn_test/NeuePixel-Regular.otf');
-                helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/threejs_cdn_test/HelveticaNeueLTStd-Roman.otf');
+                neue = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/NeuePixel-Regular.otf');
+                helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/HelveticaNeueLTStd-Roman.otf');
             }
 
             p5.setup = function () {
