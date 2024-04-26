@@ -36,6 +36,11 @@ export default class globeDiv {
             let markers = [];
             let activeMarkerIndex;
 
+            let loadCount = 0;
+
+            let showGUI = false;
+
+            /*
             p5.preload = function () {
                 neue = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/NeuePixel-Regular.otf');
                 helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/HelveticaNeueLTStd-Roman.otf');
@@ -45,6 +50,7 @@ export default class globeDiv {
                     'header'
                 );
             }
+            */
 
             p5.setup = function () {
                 let canvas = p5.createCanvas(clientWidth_g, clientHeight_g, p5.WEBGL);
@@ -56,13 +62,18 @@ export default class globeDiv {
                 initCam();
 
                 initGlobe();
+
+                loadAssets();
             }
 
             p5.draw = function () {
                 p5.background(0);
                 drawGlobe();
-                updateMarkers();
-                drawGUI();
+
+                if (showGUI == true) {
+                    updateMarkers();
+                    drawGUI();
+                }
 
             }
 
@@ -75,6 +86,20 @@ export default class globeDiv {
                 initCam();
                 initGlobe();
 
+            }
+
+            function loadAssets() {
+
+                table = p5.loadTable(
+                    'https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/projects_v2.csv',
+                    'header', loadCounter
+                );
+            }
+
+            function loadCounter() {
+                //console.log("Data table has been loaded");
+                initMarkers();
+                showGUI = true;
             }
 
             function initCam() {
@@ -122,11 +147,15 @@ export default class globeDiv {
                     latRadius.push(tempRadius * 2);
                 }
 
+            }
+
+            function initMarkers() {
+
                 // initialise the markers
 
                 markers = [];
 
-                console.log(table.rows.length);
+                //console.log(table.rows.length);
 
                 for (let i = 0; i < table.rows.length; i++) {
                     let tempMarker = new marker(
@@ -147,7 +176,8 @@ export default class globeDiv {
                     markers[i].update();
                 }
 
-                console.log(markers.length + " markers pushed into the array!");
+                //console.log(markers.length + " markers pushed into the array!");
+
             }
 
             function drawGlobe() {
@@ -180,7 +210,7 @@ export default class globeDiv {
                 }
 
                 p5.noStroke();
-                p5.fill(0,150);
+                p5.fill(0, 150);
                 p5.sphere(r - 5, 48, 48);
             }
 

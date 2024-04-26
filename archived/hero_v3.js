@@ -37,10 +37,9 @@ export default class heroDiv {
             let neue;
             let helvetica;
 
-            let heroStatement;
-            let maskWidth;
             let introString = "We are ";
             let introWidth;
+            let newLine;
             let closingString = "data scientists  ";
             let closingWidth;
             let fontSize;
@@ -59,12 +58,9 @@ export default class heroDiv {
                 "data scientists"];
 
             let type_1;
-            let newLine = false;
 
-            p5.preload = function () {
-                neue = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/NeuePixel-Regular.otf');
-                helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/HelveticaNeueLTStd-Roman.otf');
-            }
+            let runTypeAni = false;
+            let loadCount = 0;
 
             p5.setup = function () {
                 let canvas = p5.createCanvas(clientWidth, clientHeight);
@@ -74,14 +70,17 @@ export default class heroDiv {
                 initGrid();
                 makeArrows();
 
-                type_1 = new typeWriter(heroStatements);
+                loadAssets(); // load the two fonts and initialise typewriter class
             }
 
             p5.draw = function () {
                 p5.background(0);
                 drawArrows();
                 //drawDebugGird();
-                type_1.update();
+
+                if (runTypeAni == true) {
+                    type_1.update();
+                }
             }
 
             p5.windowResized = function () {
@@ -99,21 +98,41 @@ export default class heroDiv {
                     initGrid();
                     makeArrows();
 
-                    type_1 = new typeWriter(heroStatements);
+                    if (runTypeAni == true) {
+                        type_1 = new typeWriter(heroStatements);
+                    }
+
                 }
 
+            }
+
+            function loadAssets() {
+
+                neue = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/NeuePixel-Regular.otf', loadCounter);
+                helvetica = p5.loadFont('https://cdn.jsdelivr.net/gh/Krishna-Duddumpudi/dfx_website_v7/fonts/HelveticaNeueLTStd-Roman.otf', loadCounter);
+
+            }
+
+            function loadCounter() {
+                loadCount++;
+
+                if (loadCount == 2) {
+                    //console.log("Fonts have finished loading!");
+                    type_1 = new typeWriter(heroStatements);
+                    runTypeAni = true;
+                }
             }
 
             function deviceCheck(onMobile) {
                 if (/Android|iPhone/i.test(navigator.userAgent)) {
                     // mobile
                     onMobile = true;
-                    console.log("user is on mobile");
+                    //console.log("user is on mobile");
 
                 } else {
                     // desktop
                     onMobile = false;
-                    console.log("user is on desktop");
+                    //console.log("user is on desktop");
                 }
                 return onMobile;
             }
@@ -160,11 +179,15 @@ export default class heroDiv {
                 }
 
                 let balance = clientHeight - yMax;
-                console.log("balance is : " + balance);
+                //console.log("balance is : " + balance);
 
                 clientOffsetY = clientOffsetY + (balance / 2);
 
-                calculateFontSize();
+                if (runTypeAni == true) {
+                    calculateFontSize();
+                }else{
+                    fontSize = gridSpacing * 4;
+                }
 
             }
 
@@ -194,7 +217,7 @@ export default class heroDiv {
             function calculateFontSize() {
 
                 //process default font size
-                fontSize = gridSpacing * 4;
+                //fontSize = gridSpacing * 4;
 
                 p5.textFont(helvetica);
                 p5.textSize(fontSize);
@@ -202,10 +225,10 @@ export default class heroDiv {
 
                 if (closingWidth < clientWidth) {
                     fontSize = gridSpacing * 4;
-                    console.log("font size is : " + fontSize);
+                    //console.log("font size is : " + fontSize);
                 } else {
                     fontSize = (clientWidth / closingWidth) * (gridSpacing * 4);
-                    console.log("resized font size is : " + (clientWidth / closingWidth) * gridSpacing);
+                    //console.log("resized font size is : " + (clientWidth / closingWidth) * gridSpacing);
                 }
             }
 
@@ -237,8 +260,6 @@ export default class heroDiv {
                     //base noise calculations
                     let multiplier = 0.0015;
 
-
-
                     if (onMobile == false) {
                         let noiseVal = p5.noise(this._posX * multiplier, this._posY * multiplier);
                         this.reMappedNoise = p5.map(noiseVal, 0, 1, -3.14, 3.14);
@@ -253,11 +274,13 @@ export default class heroDiv {
 
                         let d = p5.dist(this._posX, this._posY, p5.mouseX, p5.mouseY);
 
-                        // lerp angles based on touch
-                        if (d < 500) {
-                            this.lerpedAngle = p5.lerp(this.arrowHeading, this.reMappedNoise, d / 500);
+                        let range = (clientWidth/2) - (p5.dist(p5.mouseX,clientWidth/2));
+                        let rangeRemapped = p5.map(p5.mouseX,0,clientWidth/2,50,500);
+
+                        // lerp angles based on distance
+                        if (d < rangeRemapped) {
+                            this.lerpedAngle = p5.lerp(this.arrowHeading, this.reMappedNoise, d / rangeRemapped);
                             this.angle = this.lerpedAngle;
-                            this.fallOff = 100;
                         } else {
                             this.angle = this.reMappedNoise;
                         }
@@ -316,6 +339,8 @@ export default class heroDiv {
                 }
 
                 update() {
+
+
 
                     let typeGlitch = p5.int(p5.random(3, 15));
 
@@ -388,6 +413,7 @@ export default class heroDiv {
                     }
 
                     this.counter++;
+
                 }
 
                 pickStatement() {

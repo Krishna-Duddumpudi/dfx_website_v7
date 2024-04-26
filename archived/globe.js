@@ -77,6 +77,10 @@ export default class globeDiv {
 
             }
 
+            function loadAssets(){
+                
+            }
+
             function initCam() {
 
                 // projection
